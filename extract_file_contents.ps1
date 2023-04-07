@@ -9,36 +9,41 @@ if (-not ($folderPath)) {
 }
 
 function Get-FilesRecursive {
-    param(
-        [string]$folder
+    param (
+        [string]$folderPath
     )
 
-    Get-ChildItem -Path $folder -Recurse -File
-}
-
-function Extract-Contents {
-    param(
-        [string]$folder
-    )
-
-    $files = Get-FilesRecursive -folder $folder
-    $folderPath = (Get-Item -Path $folder).FullName
+    $files = Get-ChildItem -Path $folderPath -File
+    $folders = Get-ChildItem -Path $folderPath -Directory
 
     foreach ($file in $files) {
-        $relPath = $file.FullName.Substring($folderPath.Length).TrimStart("\")
-        Write-Output "=== $relPath ==="
-
-        try {
-            $content = Get-Content -Path $file.FullName -Encoding UTF8
-            Write-Output $content
+        if ($file.FullName) {
+            $file.FullName
         }
-        catch {
-            Write-Output "<Unable to read file contents due to encoding issues>"
-        }
+    }
 
-        Write-Output ""
+    foreach ($folder in $folders) {
+        Get-FilesRecursive -folderPath $folder.FullName
     }
 }
+
+
+function Extract-Contents {
+    param (
+        [string]$folderPath
+    )
+
+    $files = Get-FilesRecursive -folderPath $folderPath
+
+    foreach ($file in $files) {
+        $fileObj = Get-Item -Path $file
+        $relPath = $fileObj.FullName.Substring((Get-Item -Path $folderPath).FullName.Length).TrimStart('\')
+
+        Write-Output "`n`n=== $relPath ===`n"
+        Get-Content -Path $fileObj.FullName | Write-Output
+    }
+}
+
 
 
 Extract-Contents -folder $folderPath 
