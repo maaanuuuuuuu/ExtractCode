@@ -42,6 +42,6 @@ Replace <folder_path> with the path to the folder you want to process, and <outp
 
 The script will display the contents of the files in the specified folder and its subfolders, and save them to the specified output file if provided.
 
-###License
+## License
 
 This project is released under the MIT License
