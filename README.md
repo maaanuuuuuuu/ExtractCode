@@ -32,7 +32,7 @@ Now you can use the `extract_file_contents` command in any PowerShell window.
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 ```
 
-3.Run the script with the following command:
+3. Run the script with the following command:
 
 ```powershell
 extract_file_contents -folderPath <folder_path> > <output_file>
